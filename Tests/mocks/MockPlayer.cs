@@ -5,19 +5,19 @@ namespace Tests.mocks
 {
     internal class MockPlayer : Player
     {
-        private bool chooseCalled;
+        private int chooseCalled;
         private GameResult result;
         private Choice nextChoiceToReturn;
 
         public MockPlayer()
         {
-            this.chooseCalled = false;
+            this.chooseCalled = 0;
             
         }
 
         public Choice choose()
         {
-            this.chooseCalled = true;
+            this.chooseCalled++;
             return this.nextChoiceToReturn;
         }
 
@@ -27,6 +27,10 @@ namespace Tests.mocks
         }
 
         internal Boolean chooseWasCalled()
+        {
+            return this.chooseCalled > 0;
+        }
+        internal int chooseWasCalledTimes()
         {
             return this.chooseCalled;
         }

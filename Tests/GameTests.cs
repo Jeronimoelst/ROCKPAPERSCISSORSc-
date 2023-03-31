@@ -18,8 +18,8 @@ namespace Tests
             game.start();
 
 
-            Assert.IsTrue(playerOne.chooseWasCalled());
-            Assert.IsTrue(playerTwo.chooseWasCalled());
+            Assert.AreEqual(1, playerOne.chooseWasCalledTimes());
+            Assert.AreEqual(1, playerTwo.chooseWasCalledTimes());
 
         }
 
@@ -35,164 +35,39 @@ namespace Tests
             
 
 
-            Assert.IsFalse(playerOne.chooseWasCalled());
-            Assert.IsFalse(playerTwo.chooseWasCalled());
+            Assert.AreEqual(0, playerOne.chooseWasCalledTimes());
+            Assert.AreEqual(0, playerTwo.chooseWasCalledTimes());
 
         }
 
-        [TestMethod]
-        public void TestGamePlayerOneWin_IfP1ChooseRock()
+       
+
+        [DataTestMethod]
+        [DataRow(Choice.ROCK, Choice.ROCK,GameResult.TIE,GameResult.TIE)]
+        [DataRow(Choice.ROCK, Choice.PAPER, GameResult.LOSE, GameResult.WIN)]
+        [DataRow(Choice.PAPER, Choice.ROCK, GameResult.WIN, GameResult.LOSE)]
+        [DataRow(Choice.PAPER, Choice.PAPER, GameResult.TIE, GameResult.TIE)]
+        [DataRow(Choice.ROCK, Choice.SCISSORS, GameResult.WIN, GameResult.LOSE)]
+        [DataRow(Choice.SCISSORS, Choice.ROCK, GameResult.LOSE, GameResult.WIN)]
+        [DataRow(Choice.SCISSORS, Choice.PAPER, GameResult.WIN, GameResult.LOSE)]
+        [DataRow(Choice.PAPER, Choice.SCISSORS, GameResult.LOSE, GameResult.WIN)]
+        [DataRow(Choice.SCISSORS, Choice.SCISSORS, GameResult.TIE, GameResult.TIE)]
+        public void GameResultsTest(Choice p1, Choice p2,GameResult result1, GameResult result2)
         {
+
             MockPlayer playerOne = new MockPlayer();
             MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.ROCK);
-            playerTwo.nextChoice(Choice.SCISSORS);
+            playerOne.nextChoice(p1);
+            playerTwo.nextChoice(p2);
 
 
             game.Game game = new game.Game(playerOne, playerTwo);
             game.start();
 
-            Assert.AreNotEqual(playerOne.getGameResult(), GameResult.WIN);
-            Assert.AreNotEqual(playerTwo.getGameResult(), GameResult.LOSE);
-
-        }
-
-        [TestMethod]
-        public void TestGamePlayerTwoWin_IfP2ChooseRock()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.SCISSORS);
-            playerTwo.nextChoice(Choice.ROCK);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreNotEqual(playerOne.getGameResult(), GameResult.LOSE);
-            Assert.AreNotEqual(playerTwo.getGameResult(), GameResult.WIN);
-
-        }
-
-        [TestMethod]
-        public void TestGameTie_IfBothChooseRock()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.ROCK);
-            playerTwo.nextChoice(Choice.ROCK);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreEqual(playerOne.getGameResult(), GameResult.TIE);
-            Assert.AreEqual(playerTwo.getGameResult(), GameResult.TIE);
-
-        }
-
-        [TestMethod]
-        public void TestGamePlayerOneWin_IfP1ChoosePaper()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.PAPER);
-            playerTwo.nextChoice(Choice.ROCK);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreNotEqual(playerOne.getGameResult(), GameResult.WIN);
-            Assert.AreNotEqual(playerTwo.getGameResult(), GameResult.LOSE);
-
-        }
-
-
-        [TestMethod]
-        public void TestGamePlayerTwoWin_IfP2ChoosePaper()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.ROCK);
-            playerTwo.nextChoice(Choice.PAPER);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreNotEqual(playerOne.getGameResult(), GameResult.LOSE);
-            Assert.AreNotEqual(playerTwo.getGameResult(), GameResult.WIN);
-
-        }
-
-        [TestMethod]
-        public void TestGameTie_IfBothChoosePaper()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.PAPER);
-            playerTwo.nextChoice(Choice.PAPER);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreEqual(playerOne.getGameResult(), GameResult.TIE);
-            Assert.AreEqual(playerTwo.getGameResult(), GameResult.TIE);
-
-        }
-
-
-        [TestMethod]
-        public void TestGamePlayerOneWin_IfP1ChooseScissors()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.SCISSORS);
-            playerTwo.nextChoice(Choice.PAPER);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreNotEqual(playerOne.getGameResult(), GameResult.WIN);
-            Assert.AreNotEqual(playerTwo.getGameResult(), GameResult.LOSE);
-
-        }
-
-        [TestMethod]
-        public void TestGamePlayerTwoWin_IfP2ChooseScissors()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.PAPER);
-            playerTwo.nextChoice(Choice.SCISSORS);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreNotEqual(playerOne.getGameResult(), GameResult.LOSE);
-            Assert.AreNotEqual(playerTwo.getGameResult(), GameResult.WIN);
-
-        }
-
-
-        [TestMethod]
-        public void TestGameTie_IfBothChooseScissors()
-        {
-            MockPlayer playerOne = new MockPlayer();
-            MockPlayer playerTwo = new MockPlayer();
-            playerOne.nextChoice(Choice.SCISSORS);
-            playerTwo.nextChoice(Choice.SCISSORS);
-
-
-            game.Game game = new game.Game(playerOne, playerTwo);
-            game.start();
-
-            Assert.AreEqual(playerOne.getGameResult(), GameResult.TIE);
-            Assert.AreEqual(playerTwo.getGameResult(), GameResult.TIE);
+            Assert.AreEqual(result1, playerOne.getGameResult());
+            Assert.AreEqual(result2, playerTwo.getGameResult());
+            Assert.AreEqual(1, playerOne.chooseWasCalledTimes());
+            Assert.AreEqual(1, playerTwo.chooseWasCalledTimes());
 
         }
 
