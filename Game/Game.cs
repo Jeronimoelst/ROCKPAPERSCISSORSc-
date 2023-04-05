@@ -1,4 +1,6 @@
 ﻿using Game;
+using System;
+using System.Collections.Generic;
 
 namespace game
 {
@@ -9,7 +11,7 @@ namespace game
         SCISSORS = 3,
     }
 
-    public enum GameResult
+    public enum PointResult
     {
         TIE = 1,
         LOSE = 2,
@@ -32,47 +34,36 @@ namespace game
         {
             Choice p1choice = this.playerOne.choose();
             Choice p2choice = this.playerTwo.choose();
-
-             if (p1choice == p2choice)
-            {
-                this.playerOne.gameResult(GameResult.TIE);
-                this.playerTwo.gameResult(GameResult.TIE);
-            }
-             else if (p2choice == Choice.SCISSORS && p1choice == Choice.PAPER)
-            {
-                this.playerOne.gameResult(GameResult.LOSE);
-                this.playerTwo.gameResult(GameResult.WIN);
-
-            }
-
-
-            else if (p1choice == Choice.SCISSORS && p2choice == Choice.PAPER)
-            {
-                this.playerOne.gameResult(GameResult.WIN);
-                this.playerTwo.gameResult(GameResult.LOSE);
-            }
-
-            else if(p1choice == Choice.SCISSORS)
-            {
-                this.playerOne.gameResult(GameResult.LOSE);
-                this.playerTwo.gameResult(GameResult.WIN);
-            }
            
 
-            else if (p2choice == Choice.PAPER )
+            Dictionary<Choice, Choice> defeats = new Dictionary<Choice, Choice>();
+            defeats.Add(Choice.ROCK, Choice.SCISSORS);
+            defeats.Add(Choice.PAPER, Choice.ROCK);
+            defeats.Add(Choice.SCISSORS, Choice.PAPER);
+
+            Choice p1defeats = defeats [p1choice];
+           
+
+            if (p1choice == p2choice)
             {
-                this.playerOne.gameResult(GameResult.LOSE);
-                this.playerTwo.gameResult(GameResult.WIN);
+                
+                this.playerOne.pointResult(PointResult.TIE);
+                this.playerTwo.pointResult(PointResult.TIE);
+                this.playerOne.choose();
+                this.playerTwo.choose();
             }
-        
+
+            else if (p1defeats == p2choice)
+            {
+                this.playerOne.pointResult(PointResult.WIN);
+                this.playerTwo.pointResult(PointResult.LOSE);
+            }
             else
             {
-                this.playerOne.gameResult(GameResult.WIN);
-                this.playerTwo.gameResult(GameResult.LOSE);
+                this.playerOne.pointResult(PointResult.LOSE);
+                this.playerTwo.pointResult(PointResult.WIN);
             }
-           
             
-
         }
     }
 }

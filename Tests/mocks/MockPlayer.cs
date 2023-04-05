@@ -6,8 +6,8 @@ namespace Tests.mocks
     internal class MockPlayer : Player
     {
         private int chooseCalled;
-        private GameResult result;
-        private Choice nextChoiceToReturn;
+        private PointResult[] results = new PointResult[] {};
+        private Choice[] choicesToReturn = new Choice[] { Choice.ROCK };
 
         public MockPlayer()
         {
@@ -17,32 +17,34 @@ namespace Tests.mocks
 
         public Choice choose()
         {
+            int index = this.chooseCalled;
             this.chooseCalled++;
-            return this.nextChoiceToReturn;
+            return this.choicesToReturn[index];
         }
 
-        public void gameResult(GameResult result)
+        public void pointResult(PointResult result)
         {
-            this.result = result;
+            this.results = this.results.Append(result).ToArray();
         }
 
-        internal Boolean chooseWasCalled()
-        {
-            return this.chooseCalled > 0;
-        }
         internal int chooseWasCalledTimes()
         {
             return this.chooseCalled;
         }
 
-        internal GameResult getGameResult()
+        internal PointResult getLastPointResult()
         {
-           return this.result;
+           return this.results.Last();
         }
 
-        internal void nextChoice(Choice option)
+        internal PointResult[] getPointResults()
         {
-            this.nextChoiceToReturn = option;
+            return this.results;
+        }
+
+        internal void nextChoice(params Choice[] choices)
+        {
+            this.choicesToReturn = choices;
         }
     }
 }

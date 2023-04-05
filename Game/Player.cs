@@ -6,6 +6,6 @@ namespace Game
     {
         public Choice choose();
 
-        public void gameResult(GameResult result);
+        public void pointResult(PointResult result);
     }
 }
